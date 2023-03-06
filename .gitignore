@@ -1,9 +1,9 @@
 
 # Ignore all jetbrain files
-.idea
+.idea/*
 
 # Ignore all jupyter checkpoint
-.ipynb_checkpoints
+.ipynb_checkpoints/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
