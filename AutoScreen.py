@@ -5,7 +5,7 @@ import scrcpy
 import time
 
 
-class AutoScreen:
+class ScreenClient:
     def __init__(self):
         adb.connect("localhost:5555")
         self.client = scrcpy.Client(device=adb.device_list()[0].serial)
@@ -13,6 +13,9 @@ class AutoScreen:
 
         self._frame_ready = False
         self.client.add_listener(scrcpy.EVENT_FRAME, self._frame_is_ready_now)
+
+    def __del__(self):
+        self.close()
 
     def _frame_is_ready_now(self, frame):
         if frame is not None:
@@ -53,3 +56,24 @@ class AutoScreen:
     def get_center_of_screen(self) -> (int, int):
         (x, y) = self.get_resolution()
         return x // 2, y // 2
+
+
+class AutoScreen:
+    def __init__(self):
+        self.screen_client = ScreenClient()
+
+    def __del__(self):
+        self.close()
+
+    def run(self):
+        for i in range(20):
+            image = self.screen_client.get_last_frame()
+            time_stamp = time.time_ns()
+            image.save("./data/%d.png" % time_stamp)
+            self.screen_client.scroll_down()
+            time.sleep(1.2)
+
+    def close(self):
+        self.screen_client.close()
+
+
