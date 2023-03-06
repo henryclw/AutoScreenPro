@@ -14,6 +14,8 @@ class ScreenClient:
         self.client = scrcpy.Client(device=adb.device_list()[0].serial)
         self.client.start(threaded=True, daemon_threaded=True)
         logging.info("client start")
+        self.client.control.set_screen_power_mode(scrcpy.POWER_MODE_OFF)
+        logging.info("screen power off")
 
         self._frame_ready = False
         self.client.add_listener(scrcpy.EVENT_FRAME, self._frame_is_ready_now)
@@ -82,10 +84,13 @@ class AutoScreen:
     def run(self):
         for i in range(20):
             image = self.screen_client.get_last_frame()
-            time_stamp = time.time_ns()
-            image.save("./data/%d.png" % time_stamp)
+            self.save_image(image)
             self.screen_client.swipe_down()
             time.sleep(random.uniform(0.8, 2.4))
+
+    def save_image(self, image):
+        time_stamp = time.time_ns()
+        image.save("./data/%d.png" % time_stamp)
 
     def close(self):
         self.screen_client.close()
