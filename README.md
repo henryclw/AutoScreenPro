@@ -1,6 +1,12 @@
 # AutoScreenPro
 My private version of AutoScreen
 
+## reference
+
+- <https://github.com/Desperationis/humdroid/blob/main/humdroid/wrappers/ScrcpyWrapper.py>
+- <https://github.com/leng-yue/py-scrcpy-client>
+
+
 ## pip environments
 
 ```bash
@@ -13,3 +19,5 @@ pip freeze > requirements.txt
 ```bash
 scrcpy --disable-screensaver -w -S -t
 ```
+
+
