@@ -1,4 +1,7 @@
 
+# Ignore all generated data
+data/*
+
 # Ignore all jetbrain files
 .idea/*
 
