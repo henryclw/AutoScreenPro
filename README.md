@@ -17,7 +17,7 @@ pip freeze > requirements.txt
 ## scrcpy
 
 ```bash
-scrcpy --disable-screensaver -w -S -t
+scrcpy --disable-screensaver -w -S -t --power-off-on-close
 ```
 
 
