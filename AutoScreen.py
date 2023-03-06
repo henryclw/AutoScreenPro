@@ -18,15 +18,14 @@ class AutoScreen:
         if frame is not None:
             self._frame_ready = True
 
-    def last_frame(self):
+    def get_last_frame(self):
         self._frame_ready = False
         while not self._frame_ready:
             time.sleep(0.01)
-
-        rgb = self.client.last_frame[..., ::-1].copy()  # bgr to rgb
+        rgb = self.client.last_frame[..., ::-1].copy()  # RGB channels
         return Image.fromarray(rgb)
 
-    def scroll(self):
+    def scroll(self, x: int, y: int, h: int, v: int):
         """
         Scroll screen
 
@@ -36,7 +35,11 @@ class AutoScreen:
             h: horizontal movement
             v: vertical movement
         """
-        self.client.control.scroll(500, 500, 0, -3)
+        self.client.control.scroll(x, y, h, v)
+
+    def scroll_down(self):
+        x, y = self.get_center_of_screen()
+        self.scroll(x, y, 0, -3)
 
     def close(self):
         self.client.stop()
@@ -46,3 +49,7 @@ class AutoScreen:
 
     def get_resolution(self) -> (int, int):
         return self.client.resolution
+
+    def get_center_of_screen(self) -> (int, int):
+        (x, y) = self.get_resolution()
+        return x // 2, y // 2
