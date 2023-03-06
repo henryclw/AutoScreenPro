@@ -14,8 +14,9 @@ class ScreenClient:
         self.client = scrcpy.Client(device=adb.device_list()[0].serial)
         self.client.start(threaded=True, daemon_threaded=True)
         logging.info("client start")
-        self.client.control.set_screen_power_mode(scrcpy.POWER_MODE_OFF)
-        logging.info("screen power off")
+
+        # self.client.control.set_screen_power_mode(scrcpy.POWER_MODE_OFF)
+        # logging.info("screen power off")
 
         self._frame_ready = False
         self.client.add_listener(scrcpy.EVENT_FRAME, self._frame_is_ready_now)
