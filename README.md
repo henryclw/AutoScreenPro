@@ -20,4 +20,24 @@ pip freeze > requirements.txt
 scrcpy --disable-screensaver -w -S -t --power-off-on-close
 ```
 
+## adb
+
+```bash
+# show touches
+adb shell settings get system show_touches
+adb shell settings put system show_touches 0
+adb shell settings put system show_touches 1
+
+# show pointer location
+adb shell settings get system pointer_location
+adb shell settings put system pointer_location 0
+adb shell settings put system pointer_location 1
+
+# show debug layout
+adb shell getprop debug.layout
+adb shell setprop debug.layout true && adb shell service call activity 1599295570
+adb shell setprop debug.layout false && adb shell service call activity 1599295570
+```
+
+
 
