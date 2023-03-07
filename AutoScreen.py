@@ -5,7 +5,28 @@ from adbutils import adb
 from PIL import Image
 
 import scrcpy
+import subprocess
 import time
+
+
+class ADBPropertiesHelper:
+    @staticmethod
+    def run_bash_command(command: str) -> str:
+        print(command)
+        return subprocess.check_output(command, shell=True)
+
+    @staticmethod
+    def set_show_touches(flag: bool):
+        ADBPropertiesHelper.run_bash_command("adb shell settings put system show_touches %s" % ("1" if flag else "0"))
+
+    @staticmethod
+    def set_show_pointer_location(flag: bool):
+        ADBPropertiesHelper.run_bash_command("adb shell settings put system pointer_location %s" % ("1" if flag else "0"))
+
+    @staticmethod
+    def set_show_debug_layout(flag: bool):
+        ADBPropertiesHelper.run_bash_command(
+            "adb shell setprop debug.layout %s && adb shell service call activity 1599295570" % ("true" if flag else "false"))
 
 
 class ScreenClient:
@@ -91,7 +112,7 @@ class AutoScreen:
 
     def save_image(self, image):
         time_stamp = time.time_ns()
-        image.save("./data/%d.png" % time_stamp)
+        image.save("./data/raw/%d.png" % time_stamp)
 
     def close(self):
         self.screen_client.close()
