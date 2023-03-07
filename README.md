@@ -12,6 +12,7 @@ My private version of AutoScreen
 ```bash
 pip install -r requirements.txt
 pip freeze > requirements.txt
+pip list --format=freeze > requirements.txt
 ```
 
 ## scrcpy
