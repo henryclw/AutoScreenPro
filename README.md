@@ -5,6 +5,14 @@ My private version of AutoScreen
 
 - <https://github.com/Desperationis/humdroid/blob/main/humdroid/wrappers/ScrcpyWrapper.py>
 - <https://github.com/leng-yue/py-scrcpy-client>
+- <https://huggingface.co/spaces/PaddlePaddle/UIE-X>
+- <https://huggingface.co/spaces/PaddlePaddle/ERNIE-Layout>
+- <https://docs.opencv.org/4.x/d4/dc6/tutorial_py_template_matching.html>
+- <https://github.com/Layout-Parser/layout-parser>
+- <https://github.com/PaddlePaddle/PaddleOCR>
+- <https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/layout/README.md>
+- <https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_en/quickstart_en.md>
+
 
 
 ## pip environments
