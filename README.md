@@ -15,9 +15,22 @@ My private version of AutoScreen
 
 
 
+## conda environments
+
+```bash
+conda create --name py310asp python=3.10
+conda activate py310asp
+conda remove -n py310asp --all
+```
+
+
 ## pip environments
 
 ```bash
+pip install jupyterlab seaborn
+pip install seaborn 
+pip install paddlepaddle-gpu paddleocr
+
 pip install -r requirements.txt
 pip freeze > requirements.txt
 pip list --format=freeze > requirements.txt
