@@ -20,6 +20,7 @@ My private version of AutoScreen
 ```bash
 conda create --name py310asp python=3.10
 conda activate py310asp
+conda deactivate
 conda remove -n py310asp --all
 ```
 
@@ -27,9 +28,24 @@ conda remove -n py310asp --all
 ## pip environments
 
 ```bash
+pip install pip-review
 pip install jupyterlab seaborn
-pip install seaborn 
-pip install paddlepaddle-gpu paddleocr
+pip install scrcpy-client
+# pip install scikit-image
+
+pip install pip-review jupyterlab seaborn scrcpy-client
+
+# 
+conda install -c conda-forge cudatoolkit=11.7 cudnn=8.4.1
+
+# https://www.paddlepaddle.org.cn/en/install/quick
+# pip install paddlepaddle-gpu paddleocr
+pip install paddlepaddle-gpu==2.4.2.post117 -f https://www.paddlepaddle.org.cn/whl/windows/mkl/avx/stable.html
+pip install paddleocr
+
+pip list
+pip list | grep scikit-image
+pip list | grep cv
 
 pip install -r requirements.txt
 pip freeze > requirements.txt
