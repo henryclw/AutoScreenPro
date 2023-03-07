@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     ADBPropertiesHelper.set_show_touches(True)
     ADBPropertiesHelper.set_show_pointer_location(True)
-    ADBPropertiesHelper.set_show_debug_layout(True)
+    # ADBPropertiesHelper.set_show_debug_layout(True)
 
     process.send_signal(signal.CTRL_C_EVENT)
     process.terminate()

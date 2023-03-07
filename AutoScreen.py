@@ -12,7 +12,7 @@ import time
 class ADBPropertiesHelper:
     @staticmethod
     def run_bash_command(command: str) -> str:
-        print(command)
+        logging.info("run command: %s" % command)
         return subprocess.check_output(command, shell=True)
 
     @staticmethod
@@ -88,6 +88,9 @@ class ScreenClient:
         end_y = start_y + random.randint(-900, -200)
         self.swipe(start_x, start_y, end_x, end_y, random.randint(10, 30), random.random() / 10)
 
+    def roll_down(self, dx: int, dy: int):
+        ADBPropertiesHelper.run_bash_command("adb shell input trackball roll %d %d" % (dx, dy))
+
     def get_resolution(self) -> (int, int):
         return self.client.resolution
 
@@ -107,8 +110,8 @@ class AutoScreen:
         for i in range(20):
             image = self.screen_client.get_last_frame()
             self.save_image(image)
-            self.screen_client.swipe_down()
-            time.sleep(random.uniform(0.8, 2.4))
+            self.screen_client.roll_down(0, 1)
+            # time.sleep(random.uniform(0.8, 2.4))
 
     def save_image(self, image):
         time_stamp = time.time_ns()
