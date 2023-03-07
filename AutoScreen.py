@@ -1,12 +1,14 @@
+import cv2 as cv
 import logging
+import numpy as np
 import random
-
-from adbutils import adb
-from PIL import Image
-
 import scrcpy
 import subprocess
 import time
+
+from adbutils import adb
+from PIL import Image
+from skimage.metrics import structural_similarity
 
 
 class ADBPropertiesHelper:
@@ -21,12 +23,14 @@ class ADBPropertiesHelper:
 
     @staticmethod
     def set_show_pointer_location(flag: bool):
-        ADBPropertiesHelper.run_bash_command("adb shell settings put system pointer_location %s" % ("1" if flag else "0"))
+        ADBPropertiesHelper.run_bash_command(
+            "adb shell settings put system pointer_location %s" % ("1" if flag else "0"))
 
     @staticmethod
     def set_show_debug_layout(flag: bool):
         ADBPropertiesHelper.run_bash_command(
-            "adb shell setprop debug.layout %s && adb shell service call activity 1599295570" % ("true" if flag else "false"))
+            "adb shell setprop debug.layout %s && adb shell service call activity 1599295570" % (
+                "true" if flag else "false"))
 
 
 class ScreenClient:
@@ -55,6 +59,24 @@ class ScreenClient:
             time.sleep(0.01)
         rgb = self.client.last_frame[..., ::-1].copy()  # RGB channels
         return Image.fromarray(rgb)
+
+    def get_stable_last_frame(self, ratio: float = 0.98):
+        frame_old = self.get_last_frame()
+        frame_new = self.get_last_frame()
+        try_count = 0
+        while try_count < 10 and ScreenClient.compare_two_frame_similarity(frame_old, frame_new) > ratio:
+            frame_new = self.get_last_frame()
+        return frame_new
+
+    @staticmethod
+    def compare_two_frame_similarity(frame_old, frame_new):
+        frame_old_gray = cv.cvtColor(np.asarray(frame_old), cv.COLOR_BGR2GRAY)
+        frame_new_gray = cv.cvtColor(np.asarray(frame_new), cv.COLOR_BGR2GRAY)
+
+        # Compute SSIM between two images
+        score, diff = structural_similarity(frame_old_gray, frame_new_gray, full=True)
+        logging.info("Similarity Score: {:.3f}%".format(score * 100))
+        return score
 
     def scroll(self, x: int, y: int, h: int, v: int):
         """
@@ -108,7 +130,7 @@ class AutoScreen:
 
     def run(self):
         for i in range(20):
-            image = self.screen_client.get_last_frame()
+            image = self.screen_client.get_stable_last_frame()
             self.save_image(image)
             self.screen_client.roll_down(0, 1)
             # time.sleep(random.uniform(0.8, 2.4))
@@ -119,5 +141,3 @@ class AutoScreen:
 
     def close(self):
         self.screen_client.close()
-
-
