@@ -66,6 +66,9 @@ class ScreenClient:
         try_count = 0
         while try_count < 10 and ScreenClient.compare_two_frame_similarity(frame_old, frame_new) > ratio:
             frame_new = self.get_last_frame()
+            try_count += 1
+            # if try_count >= 10:
+            #     raise ??
         return frame_new
 
     @staticmethod
@@ -108,7 +111,7 @@ class ScreenClient:
         end_x = start_x + random.randint(-200, 200)
         start_y = y + random.randint(-100, 700)
         end_y = start_y + random.randint(-900, -200)
-        self.swipe(start_x, start_y, end_x, end_y, random.randint(10, 30), random.random() / 10)
+        self.swipe(start_x, start_y, end_x, end_y, random.randint(8, 12), random.random() / 100)
 
     def roll_down(self, dx: int, dy: int):
         ADBPropertiesHelper.run_bash_command("adb shell input trackball roll %d %d" % (dx, dy))
@@ -129,10 +132,10 @@ class AutoScreen:
         self.close()
 
     def run(self):
-        for i in range(20):
+        for i in range(100):
             image = self.screen_client.get_stable_last_frame()
             self.save_image(image)
-            self.screen_client.roll_down(0, 1)
+            self.screen_client.swipe_down()
             # time.sleep(random.uniform(0.8, 2.4))
 
     def save_image(self, image):
