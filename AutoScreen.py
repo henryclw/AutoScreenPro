@@ -110,7 +110,7 @@ class ScreenClient:
         start_x = x + random.randint(-300, 300)
         end_x = start_x + random.randint(-200, 200)
         start_y = y + random.randint(-100, 700)
-        end_y = start_y + random.randint(-900, -200)
+        end_y = start_y + random.randint(-900, -500)
         self.swipe(start_x, start_y, end_x, end_y, random.randint(8, 12), random.random() / 100)
 
     def roll_down(self, dx: int, dy: int):
