@@ -111,7 +111,7 @@ class ScreenClient:
         end_x = start_x + random.randint(-200, 200)
         start_y = y + random.randint(-100, 700)
         end_y = start_y + random.randint(-900, -500)
-        self.swipe(start_x, start_y, end_x, end_y, random.randint(8, 12), random.random() / 100)
+        self.swipe(start_x, start_y, end_x, end_y, random.randint(8, 12), random.randint(10, 15) / 1000)
 
     def roll_down(self, dx: int, dy: int):
         ADBPropertiesHelper.run_bash_command("adb shell input trackball roll %d %d" % (dx, dy))
@@ -132,7 +132,7 @@ class AutoScreen:
         self.close()
 
     def run(self):
-        for i in range(100):
+        for i in range(720):
             image = self.screen_client.get_stable_last_frame()
             self.save_image(image)
             self.screen_client.swipe_down()
