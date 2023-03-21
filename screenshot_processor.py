@@ -13,6 +13,9 @@ import math
 import config
 
 
+cd = config.Config().config_dict
+
+
 class ScreenshotProcessor:
     def __init__(self, pil_image: Image):
         self.pil_image = pil_image
@@ -50,18 +53,20 @@ class ScreenshotProcessor:
         cut_x_list = self._get_cut_line_position_by_gray(gray)
         logging.info("In cut_this_wechat_moment cut_x_list: {}".format(cut_x_list))
         if len(cut_x_list) > 1:
-            swipe_down_distance_for_next_moment = cut_x_list[1] - 300
-            self._save_first_wechat_moment(cut_x_list, "E:/data/AutoScreenPro/temp/")
+            swipe_down_distance_for_next_moment = cut_x_list[1] - cd["wechat_moment_next_y_head_position"]
+            self._save_first_wechat_moment(cut_x_list, cd["wechat_moment_image_save_path"])
         else:
             logging.warning("In cut_this_wechat_moment, cut_x_list length is less than two")
-            swipe_down_distance_for_next_moment = 1800
+            if len(cut_x_list) == 1:
+                swipe_down_distance_for_next_moment = max(cut_x_list[0] - cd["wechat_moment_next_y_head_position"], 960)
+            else:
+                swipe_down_distance_for_next_moment = 1800
         logging.info("In cut_this_wechat_moment swipe_down_distance_for_next_moment: {}"
                      .format(swipe_down_distance_for_next_moment))
         return swipe_down_distance_for_next_moment
 
 
 if __name__ == "__main__":
-    cd = config.Config().config_dict
     the_image = Image.open(cd["raw_screen_shot_path"] + "1678168986611948200.png")
     sp = ScreenshotProcessor(the_image)
     sp.cut_this_wechat_moment()

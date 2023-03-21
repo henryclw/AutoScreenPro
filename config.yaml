@@ -1,2 +1,4 @@
-raw_screen_shot_path: "E:/data/AutoScreenPro/raw/"
+﻿raw_screen_shot_path: "E:/data/AutoScreenPro/raw/"
 temp_data_path: "E:/data/AutoScreenPro/temp/"
+wechat_moment_image_save_path: "E:/data/AutoScreenPro/documents/wechat_moments/image/"
+wechat_moment_next_y_head_position: 360  # 下一條朋友圈最頂端的灰色線的目標y坐標
