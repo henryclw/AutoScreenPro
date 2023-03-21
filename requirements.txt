@@ -73,15 +73,15 @@ Jinja2==3.1.2
 json5==0.9.11
 jsonpointer==2.3
 jsonschema==4.17.3
+jupyter-events==0.6.3
+jupyter-ydoc==0.2.3
 jupyter_client==8.0.3
 jupyter_core==5.2.0
-jupyter-events==0.6.3
 jupyter_server==2.4.0
 jupyter_server_fileid==0.8.0
 jupyter_server_terminals==0.4.4
-jupyter_server_ydoc==0.6.1
-jupyter-ydoc==0.2.2
-jupyterlab==3.6.1
+jupyter_server_ydoc==0.8.0
+jupyterlab==3.6.2
 jupyterlab-pygments==0.2.2
 jupyterlab_server==2.20.0
 kiwisolver==1.4.4
@@ -123,7 +123,6 @@ parso==0.8.3
 pdf2docx==0.5.6
 pickleshare==0.7.5
 Pillow==9.4.0
-pip==23.0.1
 pip-review==1.3.0
 platformdirs==3.1.0
 premailer==3.10.0
@@ -166,7 +165,6 @@ scipy==1.10.1
 scrcpy-client==0.4.7
 seaborn==0.12.2
 Send2Trash==1.8.0
-setuptools==67.5.1
 shapely==2.0.1
 six==1.16.0
 sniffio==1.3.0
@@ -196,7 +194,6 @@ webencodings==0.5.1
 websocket-client==1.5.1
 websockets==10.4
 Werkzeug==2.2.3
-wheel==0.38.4
 whichcraft==0.6.1
 x2paddle==1.4.0
 xmltodict==0.13.0
