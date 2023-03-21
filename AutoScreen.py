@@ -10,6 +10,8 @@ from adbutils import adb
 from PIL import Image
 from skimage.metrics import structural_similarity
 
+from screenshot_processor import ScreenshotProcessor
+
 
 class ADBPropertiesHelper:
     @staticmethod
@@ -105,12 +107,14 @@ class ScreenClient:
               move_step_length: int = 5, move_steps_delay: float = 0.005):
         self.client.control.swipe(start_x, start_y, end_x, end_y, move_step_length, move_steps_delay)
 
-    def swipe_down(self):
+    def swipe_down(self, delta_y: int = None):
         x, y = self.get_center_of_screen()
         start_x = x + random.randint(-300, 300)
         end_x = start_x + random.randint(-200, 200)
         start_y = y + random.randint(-100, 700)
-        end_y = start_y + random.randint(-900, -500)
+        if delta_y is None:
+            delta_y = random.randint(500, 900)
+        end_y = start_y - delta_y
         self.swipe(start_x, start_y, end_x, end_y, random.randint(8, 12), random.randint(10, 15) / 1000)
 
     def roll_down(self, dx: int, dy: int):
@@ -132,10 +136,12 @@ class AutoScreen:
         self.close()
 
     def run(self):
-        for i in range(720):
+        for i in range(5):
             image = self.screen_client.get_stable_last_frame()
+            sp = ScreenshotProcessor(image)
+            next_wechat_moment_delta_y = sp.cut_this_wechat_moment()
             self.save_image(image)
-            self.screen_client.swipe_down()
+            self.screen_client.swipe_down(next_wechat_moment_delta_y)
             # time.sleep(random.uniform(0.8, 2.4))
 
     def save_image(self, image):
