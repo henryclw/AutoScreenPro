@@ -32,26 +32,28 @@ class ScreenshotProcessor:
         for i in range(gray.shape[0]):
             # for i in range(1850, 1860):
             this_line = gray[i, :]
-            if 226 < np.median(this_line) < 229:
+            if 226 <= np.median(this_line) <= 229 and this_line.min() > 225 and this_line.max() < 230:
                 logging.info("In _get_cut_line_position_by_gray i: {}, max: {}, min: {}, median: {}, mean: {}"
                              .format(i, this_line.max(), this_line.min(), np.median(this_line), this_line.mean()))
                 cut_x_list.append(i)
         return cut_x_list
 
-    def _save_wechat_moment(self, cut_x_list: List, save_base_path: str):
-        for i in range(len(cut_x_list) - 1):
-            this_moment = self.image_array[cut_x_list[i] + 1: cut_x_list[i + 1], :]
-            this_moment = Image.fromarray(this_moment)
-            this_moment.save(save_base_path + "s%d.png" % i)
+    def _save_first_wechat_moment(self, cut_x_list: List, save_base_path: str):
+        time_stamp = time.time_ns()
+        this_moment = self.image_array[cut_x_list[0]: cut_x_list[1], :]
+        this_moment = Image.fromarray(this_moment)
+        # this_moment.save(save_base_path + "s%d.png" % i)
+        this_moment.save(save_base_path + "%d.png" % time_stamp)
 
     def cut_this_wechat_moment(self):
         gray = self._get_gray_array()
         cut_x_list = self._get_cut_line_position_by_gray(gray)
-        self._save_wechat_moment(cut_x_list, "E:/data/AutoScreenPro/temp/")
         logging.info("In cut_this_wechat_moment cut_x_list: {}".format(cut_x_list))
         if len(cut_x_list) > 1:
-            swipe_down_distance_for_next_moment = cut_x_list[1] - 240
+            swipe_down_distance_for_next_moment = cut_x_list[1] - 300
+            self._save_first_wechat_moment(cut_x_list, "E:/data/AutoScreenPro/temp/")
         else:
+            logging.warning("In cut_this_wechat_moment, cut_x_list length is less than two")
             swipe_down_distance_for_next_moment = 1800
         logging.info("In cut_this_wechat_moment swipe_down_distance_for_next_moment: {}"
                      .format(swipe_down_distance_for_next_moment))

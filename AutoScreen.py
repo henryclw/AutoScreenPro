@@ -111,11 +111,11 @@ class ScreenClient:
         x, y = self.get_center_of_screen()
         start_x = x + random.randint(-300, 300)
         end_x = start_x + random.randint(-200, 200)
-        start_y = y + random.randint(-100, 700)
+        start_y = random.randint(1810, 1910)
         if delta_y is None:
             delta_y = random.randint(500, 900)
         end_y = start_y - delta_y
-        self.swipe(start_x, start_y, end_x, end_y, random.randint(8, 12), random.randint(10, 15) / 1000)
+        self.swipe(start_x, start_y, end_x, end_y, random.randint(8, 12), random.randint(2, 5) / 1000)
 
     def roll_down(self, dx: int, dy: int):
         ADBPropertiesHelper.run_bash_command("adb shell input trackball roll %d %d" % (dx, dy))
@@ -136,7 +136,7 @@ class AutoScreen:
         self.close()
 
     def run(self):
-        for i in range(5):
+        for i in range(50):
             image = self.screen_client.get_stable_last_frame()
             sp = ScreenshotProcessor(image)
             next_wechat_moment_delta_y = sp.cut_this_wechat_moment()
@@ -146,7 +146,7 @@ class AutoScreen:
 
     def save_image(self, image):
         time_stamp = time.time_ns()
-        image.save("./data/raw/%d.png" % time_stamp)
+        image.save("E:/data/AutoScreenPro/raw/%d.png" % time_stamp)
 
     def close(self):
         self.screen_client.close()
