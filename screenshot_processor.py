@@ -35,7 +35,8 @@ class ScreenshotProcessor:
         for i in range(gray.shape[0]):
             # for i in range(1850, 1860):
             this_line = gray[i, :]
-            if 226 <= np.median(this_line) <= 229 and this_line.min() > 225 and this_line.max() < 230:
+            # all should be in 227, 228
+            if 226 <= np.median(this_line) <= 229 and this_line.min() >= 226 and this_line.max() <= 229:
                 logging.info("In _get_cut_line_position_by_gray i: {}, max: {}, min: {}, median: {}, mean: {}"
                              .format(i, this_line.max(), this_line.min(), np.median(this_line), this_line.mean()))
                 cut_x_list.append(i)
