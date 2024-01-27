@@ -3,23 +3,14 @@ My private version of AutoScreen
 
 ## reference
 
-- <https://github.com/Desperationis/humdroid/blob/main/humdroid/wrappers/ScrcpyWrapper.py>
-- <https://github.com/leng-yue/py-scrcpy-client>
-- <https://huggingface.co/spaces/PaddlePaddle/UIE-X>
-- <https://huggingface.co/spaces/PaddlePaddle/ERNIE-Layout>
-- <https://docs.opencv.org/4.x/d4/dc6/tutorial_py_template_matching.html>
-- <https://github.com/Layout-Parser/layout-parser>
-- <https://github.com/PaddlePaddle/PaddleOCR>
-- <https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/layout/README.md>
-- <https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_en/quickstart_en.md>
-
-
+- <https://github.com/mnotgod96/AppAgent/blob/ed8984634fb795826b7c95fb45af0707c73c989e/scripts/and_controller.py#L118>
 
 ## conda environments
 
 ```bash
-conda create --name py310asp python=3.10
-conda activate py310asp
+conda create --name py312asp python=3.12
+source activate py312asp
+
 conda deactivate
 conda remove -n py310asp --all
 ```
@@ -28,24 +19,8 @@ conda remove -n py310asp --all
 ## pip environments
 
 ```bash
-pip install pip-review
-pip install jupyterlab seaborn
-pip install scrcpy-client
-# pip install scikit-image
-
-pip install pip-review jupyterlab seaborn scrcpy-client
-
-# 
-conda install -c conda-forge cudatoolkit=11.7 cudnn=8.4.1
-
-# https://www.paddlepaddle.org.cn/en/install/quick
-# pip install paddlepaddle-gpu paddleocr
-pip install paddlepaddle-gpu==2.4.2.post117 -f https://www.paddlepaddle.org.cn/whl/windows/mkl/avx/stable.html
-pip install paddleocr
-
-pip list
-pip list | grep scikit-image
-pip list | grep cv
+python -m pip install --upgrade pip
+pip install pip-review jupyterlab seaborn scikit-image
 
 pip install -r requirements.txt
 pip freeze > requirements.txt
