@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="py310asp" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="py310asp" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="py312asp" project-jdk-type="Python SDK" />
 </project>
