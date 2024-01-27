@@ -107,10 +107,13 @@ class AndroidController:
         pull_command = f"adb -s {self.device} pull " \
                        f"{os.path.join(self.screenshot_dir, prefix + '.png').replace(self.backslash, '/')} " \
                        f"{os.path.join(save_dir, prefix + '.png')}"
+        delete_file_command = f"adb -s {self.device} shell rm " \
+                              f"{os.path.join(self.screenshot_dir, prefix + '.png').replace(self.backslash, '/')}"
         result = execute_adb(cap_command)
         if result != "ERROR":
             result = execute_adb(pull_command)
             if result != "ERROR":
+                execute_adb(delete_file_command)
                 return os.path.join(save_dir, prefix + ".png")
             return result
         return result
@@ -121,10 +124,13 @@ class AndroidController:
         pull_command = f"adb -s {self.device} pull " \
                        f"{os.path.join(self.xml_dir, prefix + '.xml').replace(self.backslash, '/')} " \
                        f"{os.path.join(save_dir, prefix + '.xml')}"
+        delete_file_command = f"adb -s {self.device} shell rm " \
+                              f"{os.path.join(self.xml_dir, prefix + '.xml').replace(self.backslash, '/')}"
         result = execute_adb(dump_command)
         if result != "ERROR":
             result = execute_adb(pull_command)
             if result != "ERROR":
+                execute_adb(delete_file_command)
                 return os.path.join(save_dir, prefix + ".xml")
             return result
         return result
