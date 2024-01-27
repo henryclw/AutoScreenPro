@@ -3,7 +3,13 @@ My private version of AutoScreen
 
 ## reference
 
-- <https://github.com/mnotgod96/AppAgent/blob/ed8984634fb795826b7c95fb45af0707c73c989e/scripts/and_controller.py#L118>
+- <https://github.com/mnotgod96/AppAgent/blob/main/scripts/and_controller.py#L118>
+
+## jupyter notebook
+
+```bash
+jupyter lab
+```
 
 ## conda environments
 
@@ -15,12 +21,11 @@ conda deactivate
 conda remove -n py310asp --all
 ```
 
-
-## pip environments
+## pip packages
 
 ```bash
 python -m pip install --upgrade pip
-pip install pip-review jupyterlab seaborn scikit-image
+pip install pip-review jupyterlab seaborn scikit-image opencv-python opencv-contrib-python pyshine
 
 pip install -r requirements.txt
 pip freeze > requirements.txt

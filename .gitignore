@@ -1,5 +1,6 @@
 # Ignore testing_ipynb
 testing_ipynb/
+test*.ipynb
 
 # Ignore example data
 data/

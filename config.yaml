@@ -2,3 +2,7 @@
 temp_data_path: "E:/data/AutoScreenPro/temp/"
 wechat_moment_image_save_path: "E:/data/AutoScreenPro/documents/wechat_moments/image/"
 wechat_moment_next_y_head_position: 360  # 下一條朋友圈最頂端的灰色線的目標y坐標
+
+ANDROID_SCREENSHOT_DIR: "/sdcard/Pictures/Screenshots"  # Set the directory on your Android device to store the intermediate screenshots. Make sure the directory EXISTS on your phone!
+ANDROID_XML_DIR: "/sdcard"  # Set the directory on your Android device to store the intermediate XML files used for determining locations of UI elements on your screen. Make sure the directory EXISTS on your phone!
+MIN_DIST: 30  # The minimum distance between elements to prevent overlapping during the labeling process
