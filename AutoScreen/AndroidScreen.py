@@ -47,9 +47,13 @@ class ADBPropertiesHelper:
 
 
 class AndroidController:
-    def __init__(self, device):
+    def __init__(self, device=None):
         config: Config = Config()
-        self.device = device
+        if device is None:
+            self.device = ADBPropertiesHelper.list_all_devices()[0]
+            logging.info(f"no device provided in AndroidController.__init__, using {self.device}")
+        else:
+            self.device = device
         self.screenshot_dir = config.android_screenshot_dir
         self.xml_dir = config.android_xml_dir
         self.width, self.height = self.get_device_size()
