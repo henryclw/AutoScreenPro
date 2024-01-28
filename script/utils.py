@@ -4,31 +4,23 @@ import pyshine as ps
 import random
 
 from colorama import Fore, Style
-from matplotlib.colors import CSS4_COLORS, to_rgb, cnames
+from matplotlib.colors import CSS4_COLORS, to_rgb
 
-
-import cv2
-import numpy as np
 
 def add_text_with_transparent_bg(image, text, position, font=cv2.FONT_HERSHEY_SIMPLEX, font_scale=1, text_color=(255, 255, 255), bg_color=(128, 128, 128), alpha=0.5):
     # Calculate text size
     text_size = cv2.getTextSize(text, font, font_scale, 2)[0]
-
     # Calculate background rectangle coordinates
     x, y = position
     bg_rect_start = (x, y)
     bg_rect_end = (x + text_size[0] + 10, y + text_size[1] + 10)
-
     # Create overlay for transparency
     overlay = image.copy()
     cv2.rectangle(overlay, bg_rect_start, bg_rect_end, bg_color, -1)
-
     # Blend image and overlay with transparency
     image = cv2.addWeighted(overlay, alpha, image, 1 - alpha, 0)
-
     # Add text over rectangle
-    cv2.putText(image, text, (x + 5, y + 25), font, font_scale, text_color, 2, bottomLeftOrigin=False)
-
+    cv2.putText(image, text, (x + 5, y + 30), font, font_scale, text_color, 2, bottomLeftOrigin=False)
     return image
 
 
@@ -76,17 +68,11 @@ def draw_bbox_multi(img_path, output_path, elem_list, record_mode=False, dark_mo
                                     vspace=10, hspace=10, font_scale=1, thickness=2, background_RGB=color,
                                     text_RGB=(255, 250, 250), alpha=0.5)
             else:
-                # text_color = (10, 10, 10) if dark_mode else (255, 250, 250)
                 text_color = to_rgb(random.choice(list(CSS4_COLORS.values())))
                 text_color = tuple(int(round(c * 255)) for c in text_color)
-                bg_color = (128, 128, 128) if dark_mode else (10, 10, 10)
-                # imgcv = ps.putBText(imgcv, label, text_offset_x=(left + right) // 2 - 10,
-                #                     text_offset_y=(top + bottom) // 2 - 10,
-                #                     vspace=10, hspace=10, font_scale=1, thickness=2, background_RGB=bg_color,
-                #                     text_RGB=text_color, alpha=0.5)
-                imgcv = add_text_with_transparent_bg(imgcv, label, (left, top), text_color=text_color)
-                # imgcv = add_text_with_transparent_bg(imgcv, label, ((left + right) // 2 - 10, (top + bottom) // 2 - 10), text_color=text_color)
-                imgcv = cv2.rectangle(imgcv, (left, top), (right, bottom), text_color, 2)
+                rectangle_shrink = 5
+                imgcv = add_text_with_transparent_bg(imgcv, label, (left + rectangle_shrink, top + rectangle_shrink), text_color=text_color)
+                imgcv = cv2.rectangle(imgcv, (left + rectangle_shrink, top + rectangle_shrink), (right - rectangle_shrink, bottom - rectangle_shrink), text_color, 2)
         except Exception as e:
             print_with_color(f"ERROR: An exception occurs while labeling the image\n{e}", "red")
         count += 1
