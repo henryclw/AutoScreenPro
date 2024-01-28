@@ -3,7 +3,7 @@ import subprocess
 import xml.etree.ElementTree as ET
 
 from config import Config
-from script.utils import print_with_color
+from script_old.utils import print_with_color
 
 
 config: Config = Config()
