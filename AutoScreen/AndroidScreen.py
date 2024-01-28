@@ -9,12 +9,14 @@ from config import Config
 class ADBPropertiesHelper:
     @staticmethod
     def run_adb_command(adb_command: str) -> str:
-        logging.info("run command: %s" % adb_command)
+        logging.info("run adb command: %s" % adb_command)
         result = subprocess.run(adb_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         if result.returncode == 0:
+            logging.info(f"adb command return with this stdout: {result.stdout.strip()}")
+            logging.info(f"adb command return with this stderr: {result.stderr.strip()}")
             return result.stdout.strip()
         else:
-            logging.error("adb command failed with", result.stderr)
+            logging.error(f"adb command failed with: {result.stderr.strip()}")
             raise RuntimeError(result.stderr)
 
     @staticmethod
