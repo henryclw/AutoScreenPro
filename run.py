@@ -1,4 +1,4 @@
-from AutoScreen import *
+from AutoScreenOld import *
 from adbutils import adb
 from PIL import Image
 
