@@ -139,3 +139,10 @@ class AndroidController:
         adb_command = f"adb -s {self.device} shell input swipe {start_x} {start_x} {end_x} {end_y} {duration}"
         ret = ADBPropertiesHelper.run_adb_command(adb_command)
         return ret
+
+
+class UINode:
+    def __init__(self, name, bbox, attrib):
+        self.name = name
+        self.bbox = bbox
+        self.attrib = attrib
