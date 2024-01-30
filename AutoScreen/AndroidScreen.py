@@ -64,31 +64,31 @@ class AndroidController:
         result = ADBPropertiesHelper.run_adb_command(adb_command)
         return map(int, result.split(": ")[1].split("x"))
 
-    def get_screenshot(self, prefix, save_dir):
+    def get_screenshot(self, filename, save_dir):
         cap_command = f"adb -s {self.device} shell screencap -p " \
-                      f"{os.path.join(self.screenshot_dir, prefix + '.png').replace(self.backslash, '/')}"
+                      f"{os.path.join(self.screenshot_dir, filename + '.png').replace(self.backslash, '/')}"
         pull_command = f"adb -s {self.device} pull " \
-                       f"{os.path.join(self.screenshot_dir, prefix + '.png').replace(self.backslash, '/')} " \
-                       f"{os.path.join(save_dir, prefix + '.png')}"
+                       f"{os.path.join(self.screenshot_dir, filename + '.png').replace(self.backslash, '/')} " \
+                       f"{os.path.join(save_dir, filename + '.png')}"
         delete_file_command = f"adb -s {self.device} shell rm " \
-                              f"{os.path.join(self.screenshot_dir, prefix + '.png').replace(self.backslash, '/')}"
-        result = ADBPropertiesHelper.run_adb_command(cap_command)
-        result = ADBPropertiesHelper.run_adb_command(pull_command)
+                              f"{os.path.join(self.screenshot_dir, filename + '.png').replace(self.backslash, '/')}"
+        ADBPropertiesHelper.run_adb_command(cap_command)
+        ADBPropertiesHelper.run_adb_command(pull_command)
         ADBPropertiesHelper.run_adb_command(delete_file_command)
-        return os.path.join(save_dir, prefix + ".png")
+        return os.path.join(save_dir, filename + ".png")
 
-    def get_xml(self, prefix, save_dir):
+    def get_xml(self, filename, save_dir):
         dump_command = f"adb -s {self.device} shell uiautomator dump --compressed " \
-                       f"{os.path.join(self.xml_dir, prefix + '.xml').replace(self.backslash, '/')}"
+                       f"{os.path.join(self.xml_dir, filename + '.xml').replace(self.backslash, '/')}"
         pull_command = f"adb -s {self.device} pull " \
-                       f"{os.path.join(self.xml_dir, prefix + '.xml').replace(self.backslash, '/')} " \
-                       f"{os.path.join(save_dir, prefix + '.xml')}"
+                       f"{os.path.join(self.xml_dir, filename + '.xml').replace(self.backslash, '/')} " \
+                       f"{os.path.join(save_dir, filename + '.xml')}"
         delete_file_command = f"adb -s {self.device} shell rm " \
-                              f"{os.path.join(self.xml_dir, prefix + '.xml').replace(self.backslash, '/')}"
-        result = ADBPropertiesHelper.run_adb_command(dump_command)
-        result = ADBPropertiesHelper.run_adb_command(pull_command)
+                              f"{os.path.join(self.xml_dir, filename + '.xml').replace(self.backslash, '/')}"
+        ADBPropertiesHelper.run_adb_command(dump_command)
+        ADBPropertiesHelper.run_adb_command(pull_command)
         ADBPropertiesHelper.run_adb_command(delete_file_command)
-        return os.path.join(save_dir, prefix + ".xml")
+        return os.path.join(save_dir, filename + ".xml")
 
     def back(self):
         adb_command = f"adb -s {self.device} shell input keyevent KEYCODE_BACK"
