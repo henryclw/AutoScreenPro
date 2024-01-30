@@ -78,7 +78,7 @@ class AndroidController:
         return os.path.join(save_dir, prefix + ".png")
 
     def get_xml(self, prefix, save_dir):
-        dump_command = f"adb -s {self.device} shell uiautomator dump " \
+        dump_command = f"adb -s {self.device} shell uiautomator dump --compressed " \
                        f"{os.path.join(self.xml_dir, prefix + '.xml').replace(self.backslash, '/')}"
         pull_command = f"adb -s {self.device} pull " \
                        f"{os.path.join(self.xml_dir, prefix + '.xml').replace(self.backslash, '/')} " \
