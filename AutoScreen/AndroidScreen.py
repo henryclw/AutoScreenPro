@@ -68,7 +68,7 @@ class AndroidController:
         ADBPropertiesHelper.run_adb_command(f"adb -s {self.device} shell input keyevent 3")
 
     def press_menu_key_twice(self):
-        ADBPropertiesHelper.run_adb_command(f"adb -s {self.device} shell 'input keyevent 82 && input keyevent 82'")
+        ADBPropertiesHelper.run_adb_command(f'adb -s {self.device} shell "input keyevent 82 && input keyevent 82"')
 
     def reopen_app_by_going_to_homescreen(self):
         logging.info(f"reopen_app_by_going_to_homescreen with device {self.device}")
