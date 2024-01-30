@@ -1,6 +1,7 @@
 import logging
 import os
 import subprocess
+import time
 from typing import List
 
 from config import Config
@@ -10,29 +11,22 @@ class ADBPropertiesHelper:
     @staticmethod
     def run_adb_command(adb_command: str) -> str:
         logging.info("run adb command: %s" % adb_command)
+        assert "adb" in adb_command
         result = subprocess.run(adb_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        stderr = result.stderr.strip()
+        stdout = result.stdout.strip()
         if result.returncode == 0:
-            logging.debug(f"adb command return with this stdout: {result.stdout.strip()}")
-            logging.debug(f"adb command return with this stderr: {result.stderr.strip()}")
-            return result.stdout.strip()
+            if stderr is not None and len(stderr) > 1:
+                logging.warning(f"adb command return with this stderr: {result.stderr.strip()}")
+                if "ERROR" in stderr:
+                    raise RuntimeError(stderr)
+                return stderr
+            if stdout is not None and len(stdout) > 1:
+                logging.debug(f"adb command return with this stdout: {stdout}")
+            return stdout
         else:
-            logging.error(f"adb command failed with: {result.stderr.strip()}")
-            raise RuntimeError(result.stderr)
-
-    @staticmethod
-    def set_show_touches(flag: bool):
-        ADBPropertiesHelper.run_adb_command("adb shell settings put system show_touches %s" % ("1" if flag else "0"))
-
-    @staticmethod
-    def set_show_pointer_location(flag: bool):
-        ADBPropertiesHelper.run_adb_command(
-            "adb shell settings put system pointer_location %s" % ("1" if flag else "0"))
-
-    @staticmethod
-    def set_show_debug_layout(flag: bool):
-        ADBPropertiesHelper.run_adb_command(
-            "adb shell setprop debug.layout %s && adb shell service call activity 1599295570" % (
-                "true" if flag else "false"))
+            logging.error(f"adb command failed with: {stderr}")
+            raise RuntimeError(stderr)
 
     @staticmethod
     def list_all_devices() -> List[str]:
@@ -58,6 +52,29 @@ class AndroidController:
         self.xml_dir = config.android_xml_dir
         self.width, self.height = self.get_device_size()
         self.backslash = "\\"
+
+    def set_show_touches(self, flag: bool):
+        ADBPropertiesHelper.run_adb_command(f"adb shell -s {self.device} settings put system show_touches {'1' if flag else '0'}")
+
+    def set_show_pointer_location(self, flag: bool):
+        ADBPropertiesHelper.run_adb_command(
+            f"adb -s {self.device} shell settings put system pointer_location {'1' if flag else '0'}")
+
+    def set_show_debug_layout(self, flag: bool):
+        ADBPropertiesHelper.run_adb_command(
+            f"adb -s {self.device} shell setprop debug.layout {'true' if flag else 'false'} && adb shell -s {self.device} service call activity 1599295570")
+
+    def press_home_key(self):
+        ADBPropertiesHelper.run_adb_command(f"adb -s {self.device} shell input keyevent 3")
+
+    def press_menu_key_twice(self):
+        ADBPropertiesHelper.run_adb_command(f"adb -s {self.device} shell 'input keyevent 82 && input keyevent 82'")
+
+    def reopen_app_by_going_to_homescreen(self):
+        logging.info(f"reopen_app_by_going_to_homescreen with device {self.device}")
+        self.press_home_key()
+        time.sleep(3)
+        self.press_menu_key_twice()
 
     def get_device_size(self):
         adb_command = f"adb -s {self.device} shell wm size"
