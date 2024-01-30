@@ -43,3 +43,12 @@ def draw_bbox_multi(img_path, output_path, elem_list):
         count += 1
     cv2.imwrite(output_path, imgcv)
     return
+
+
+class AndroidUIHelper:
+    @staticmethod
+    def get_box_from_bounds_raw_str(bounds: str):
+        bounds = bounds.replace('[', '').replace(']', ',').split(',')
+        bounds = map(int, bounds[:4])
+        left, high, right, low = bounds
+        return left, high, right, low
