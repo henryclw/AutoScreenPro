@@ -57,5 +57,10 @@ adb shell setprop debug.layout true && adb shell service call activity 159929557
 adb shell setprop debug.layout false && adb shell service call activity 1599295570
 ```
 
+## docker data storage
 
+```bash
+docker compose -f "docker-compose.yml" -p "auto-screen-pro" up -d
+docker compose -f "docker-compose.yml" -p "auto-screen-pro" down
+``
 

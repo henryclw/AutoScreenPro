@@ -102,6 +102,7 @@ class AndroidController:
         return os.path.join(save_dir, filename + ".png")
 
     def get_xml(self, filename, save_dir):
+        # maybe https://github.com/dtmilano/AndroidViewClient is more stable in getting the ui xml
         dump_command = f"adb -s {self.device} shell uiautomator dump --compressed " \
                        f"{os.path.join(self.xml_dir, filename + '.xml').replace(self.backslash, '/')}"
         pull_command = f"adb -s {self.device} pull " \

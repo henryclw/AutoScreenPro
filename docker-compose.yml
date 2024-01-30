@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+  postgres:
+    restart: always
+    image: postgres:16
+    ports:
+      - "127.0.0.1:9031:5432"
+    networks:
+      - asp.dev.net
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: auto_screen_data
+      POSTGRES_USER: asp
+      POSTGRES_PASSWORD: asp_local_password_pg
+      POSTGRES_HOST_AUTH_METHOD: trust
+  
+  minio:
+    restart: always
+    image: minio/minio:RELEASE.2024-01-29T03-56-32Z
+    ports:
+      - "127.0.0.1:9032:9000"
+      - "127.0.0.1:9033:9001"
+    command: server /data --console-address ":9001"
+    networks:
+      - asp.dev.net
+    volumes:
+      - minio_data:/data/
+    environment:
+      - MINIO_ROOT_USER=asp
+      - MINIO_ROOT_PASSWORD=asp_local_password_minio
+      - MINIO_DEFAULT_BUCKETS=default_bucket_name
+#      - MINIO_SERVER_URL=http://localhost:9032
+#      - MINIO_BROWSER_REDIRECT_URL=http://localhost:9032
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  asp.dev.net:
+    driver: bridge
+
+volumes:
+  minio_data:
+  postgres_data:
