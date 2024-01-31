@@ -96,6 +96,6 @@ INSERT INTO wechat_moment_stream(created_at, username, body_text, share_link_tit
             )
     RETURNING moment_stream_id;
 
-SELECT * FROM wechat_moment_stream;
+SELECT * FROM wechat_moment_stream ORDER BY moment_stream_id DESC LIMIT 100;
 ```
 
