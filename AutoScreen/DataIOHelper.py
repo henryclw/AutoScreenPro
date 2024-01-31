@@ -33,10 +33,28 @@ class PostgresqlHelper:
     def __del__(self):
         self.connection.close()
 
-    # def wechat_moment_stream_insert(self, wechat_moment_stream):
-    #     sql = """INSERT INTO vendors(vendor_name)
-    #              VALUES(%s) RETURNING vendor_id;"""
-    #     with self.connection.cursor() as cur:
-    #         # execute the INSERT statement
-    #         cur.execute(sql, (vendor_name,))
+    def wechat_moment_stream_insert(self, wechat_moment_stream) -> int:
+        sql = "INSERT INTO wechat_moment_stream(created_at, username, body_text, share_link_title, folded_text, picture_list, liked_users, comments, extra_text_clickable, extra_text_non_clickable) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING moment_stream_id;"
+        with self.connection.cursor() as cur:
+            # execute the INSERT statement
+            cur.execute(sql, (wechat_moment_stream.create_time,
+                              wechat_moment_stream.username,
+                              wechat_moment_stream.body_text,
+                              wechat_moment_stream.share_link_title,
+                              wechat_moment_stream.folded_text,
+                              wechat_moment_stream.picture_list,
+                              wechat_moment_stream.liked_users,
+                              wechat_moment_stream.comments,
+                              wechat_moment_stream.extra_text_clickable,
+                              wechat_moment_stream.extra_text_non_clickable,
+                              ))
+
+            # get the generated id back
+            rows = cur.fetchone()
+            if rows:
+                moment_stream_id = rows[0]
+                logging.info("wechat_moment_stream_insert succeeded, with moment_stream_id {moment_stream_id}")
+                return moment_stream_id
+            else:
+                logging.warning("no moment_stream_id returned wechat_moment_stream_insert")
 
