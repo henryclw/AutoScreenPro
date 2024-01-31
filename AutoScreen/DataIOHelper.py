@@ -23,9 +23,20 @@ class MinioHelper:
 
 class PostgresqlHelper:
     def __init__(self):
-        self.conn = psycopg2.connect(database="auto_screen_data",
-                                     host="localhost",
-                                     user="asp",
-                                     password="asp_local_password_pg",
-                                     port="9031")
+        self.connection = psycopg2.connect(database="auto_screen_data",
+                                           host="localhost",
+                                           user="asp",
+                                           password="asp_local_password_pg",
+                                           port="9031")
+        self.connection.autocommit = True
+
+    def __del__(self):
+        self.connection.close()
+
+    # def wechat_moment_stream_insert(self, wechat_moment_stream):
+    #     sql = """INSERT INTO vendors(vendor_name)
+    #              VALUES(%s) RETURNING vendor_id;"""
+    #     with self.connection.cursor() as cur:
+    #         # execute the INSERT statement
+    #         cur.execute(sql, (vendor_name,))
 

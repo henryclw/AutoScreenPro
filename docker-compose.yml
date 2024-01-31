@@ -41,6 +41,29 @@ services:
       timeout: 5s
       retries: 5
 
+  sqlpad:
+    image: sqlpad/sqlpad:7.3
+    ports:
+      - '127.0.0.1:9034:3000'
+    networks:
+      - asp.dev.net
+    restart: always
+    environment:
+      SQLPAD_ADMIN: 'docker'
+      SQLPAD_ADMIN_PASSWORD: '5900xdockersqlpad'
+      SQLPAD_APP_LOG_LEVEL: debug
+      SQLPAD_WEB_LOG_LEVEL: warn
+      SQLPAD_SEED_DATA_PATH: /etc/sqlpad/seed-data
+      SQLPAD_CONNECTIONS__postgres_asp__name: postgres_asp
+      SQLPAD_CONNECTIONS__postgres_asp__driver: postgres
+      SQLPAD_CONNECTIONS__postgres_asp__host: postgres
+      SQLPAD_CONNECTIONS__postgres_asp__port: 5432
+      SQLPAD_CONNECTIONS__postgres_asp__database: auto_screen_data
+      SQLPAD_CONNECTIONS__postgres_asp__username: asp
+      SQLPAD_CONNECTIONS__postgres_asp__password: asp_local_password_pg
+      SQLPAD_CONNECTIONS__postgres_asp__multiStatementTransactionEnabled: 'true'
+      SQLPAD_CONNECTIONS__postgres_asp__idleTimeoutSeconds: 1800
+
 networks:
   asp.dev.net:
     driver: bridge

@@ -57,10 +57,45 @@ adb shell setprop debug.layout true && adb shell service call activity 159929557
 adb shell setprop debug.layout false && adb shell service call activity 1599295570
 ```
 
-## docker data storage
+# docker data storage
 
 ```bash
 docker compose -f "docker-compose.yml" -p "auto-screen-pro" up -d
 docker compose -f "docker-compose.yml" -p "auto-screen-pro" down
-``
+````
+
+## Postgresql
+
+```postgresql
+    CREATE TABLE IF NOT EXISTS wechat_moment_stream (
+        moment_stream_id SERIAL PRIMARY KEY,
+        created_at TIMESTAMP NOT NULL,
+        username VARCHAR (32) NOT NULL,
+        body_text TEXT,
+        share_link_title TEXT,
+        folded_text TEXT,
+        picture_list TEXT[],
+        liked_users TEXT[],
+        comments TEXT[],
+        extra_text_clickable TEXT[],
+        extra_text_non_clickable TEXT[]
+    );
+
+
+INSERT INTO wechat_moment_stream(created_at, username, body_text, share_link_title, folded_text, picture_list, liked_users, comments, extra_text_clickable, extra_text_non_clickable)
+    VALUES ('2022-10-10 11:30:30',
+            '张三',
+            '正文',
+            '',
+            '',
+            '{"a.jpg", "b.jpg"}',
+            '{"李四"}',
+            '{}',
+            '{}',
+            '{"昨天"}'
+            )
+    RETURNING moment_stream_id;
+
+SELECT * FROM wechat_moment_stream;
+```
 
