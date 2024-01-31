@@ -39,12 +39,13 @@ if __name__ == "__main__":
 
     minio_helper = MinioHelper(bucket_name="asp.wechat.moment.stream")
     postgresql_helper = PostgresqlHelper()
-    for round_count in range(10):
+    android_controller = AndroidController()
+
+    for round_count in range(100):
         logging.info(f"\n\n---\n\ngetting wechat moment round_count {round_count}")
         # try to get screenshot and ui xml
         for _ in range(3):
             try:
-                android_controller = AndroidController()
                 screenshot_raw_path = android_controller.get_screenshot("wechat_moment", temp_data_base_dir)
                 xml_raw_path = android_controller.get_xml("wechat_moment", temp_data_base_dir)
                 logging.info(f"Successfully saved screenshot and ui xml for {android_controller.device}")
@@ -201,9 +202,7 @@ if __name__ == "__main__":
             else:
                 logging.debug(f"ignoring this node, {i}, {node.attrib}")
 
-        if this_moment_is_ad:  # skip saving for ads
-            continue
-        else:
+        if not this_moment_is_ad:  # skip saving for ads
             print(wechat_moment_stream)
             postgresql_helper.wechat_moment_stream_insert(wechat_moment_stream)
             logging.info(f"saved to database, {wechat_moment_stream}")
@@ -214,4 +213,4 @@ if __name__ == "__main__":
 
         android_controller.swipe_up(next_swipe_up_distance)
 
-    logging.warning("\n\n---\n\nprogam exit")
+    logging.warning("\n\n---\n\nprogram exit")

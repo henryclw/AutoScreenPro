@@ -67,19 +67,20 @@ docker compose -f "docker-compose.yml" -p "auto-screen-pro" down
 ## Postgresql
 
 ```postgresql
-    CREATE TABLE IF NOT EXISTS wechat_moment_stream (
-        moment_stream_id SERIAL PRIMARY KEY,
-        created_at TIMESTAMP NOT NULL,
-        username VARCHAR (32) NOT NULL,
-        body_text TEXT,
-        share_link_title TEXT,
-        folded_text TEXT,
-        picture_list TEXT[],
-        liked_users TEXT[],
-        comments TEXT[],
-        extra_text_clickable TEXT[],
-        extra_text_non_clickable TEXT[]
-    );
+DROP TABLE wechat_moment_stream;
+CREATE TABLE IF NOT EXISTS wechat_moment_stream (
+    moment_stream_id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL,
+    username VARCHAR (32) NOT NULL,
+    body_text TEXT,
+    share_link_title TEXT,
+    folded_text TEXT,
+    picture_list TEXT[],
+    liked_users TEXT[],
+    comments TEXT[],
+    extra_text_clickable TEXT[],
+    extra_text_non_clickable TEXT[]
+);
 
 
 INSERT INTO wechat_moment_stream(created_at, username, body_text, share_link_title, folded_text, picture_list, liked_users, comments, extra_text_clickable, extra_text_non_clickable)

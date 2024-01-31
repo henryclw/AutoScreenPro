@@ -7,8 +7,8 @@ from minio import Minio
 class MinioHelper:
     def __init__(self, bucket_name: str):
         self.client = Minio("localhost:9032",
-                            access_key="sMlA7Mz30vq1U8PigRlI",
-                            secret_key="XHZEXJYIsDp5FaXqKNqfLTBYLf2H5IhRIpHAByPk",
+                            access_key="uD80ObfNC4oc6aQPGz55",
+                            secret_key="Dy5R8Jbqz6uAnaGE9TR4DQ3q06u6ZaWJO9T3VLih",
                             secure=False
                             )
         # self.bucket_name = "asp.wechat.moment.stream"

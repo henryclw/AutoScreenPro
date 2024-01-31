@@ -116,7 +116,7 @@ class AndroidController:
         return os.path.join(save_dir, filename + ".xml")
 
     def copy_and_remove_the_latest_file(self, folder_in_android: str, save_dir_in_host: str):
-        ls_command = f"adb -s {self.device} shell ls {folder_in_android} -tp | grep -v /$ | head -1"
+        ls_command = f'adb -s {self.device} shell "ls {folder_in_android} -tp | grep -v /$ | head -1"'
         filename = ADBPropertiesHelper.run_adb_command(ls_command)
         pull_command = f"adb -s {self.device} pull {folder_in_android}/{filename} {save_dir_in_host.replace(self.backslash, '/')}/{filename}"
         delete_file_command = f"adb -s {self.device} shell rm {folder_in_android}/{filename}"

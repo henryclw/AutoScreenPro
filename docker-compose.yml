@@ -11,7 +11,7 @@ services:
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - E:/wsl/docker_mount/auto_screen_pro/postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: auto_screen_data
       POSTGRES_USER: asp
@@ -28,7 +28,7 @@ services:
     networks:
       - asp.dev.net
     volumes:
-      - minio_data:/data/
+      - E:/wsl/docker_mount/auto_screen_pro/minio_data:/data/
     environment:
       - MINIO_ROOT_USER=asp
       - MINIO_ROOT_PASSWORD=asp_local_password_minio
@@ -49,8 +49,8 @@ services:
       - asp.dev.net
     restart: always
     environment:
-      SQLPAD_ADMIN: 'docker'
-      SQLPAD_ADMIN_PASSWORD: '5900xdockersqlpad'
+      SQLPAD_ADMIN: 'asp'
+      SQLPAD_ADMIN_PASSWORD: 'asp_local_password_sqlpad'
       SQLPAD_APP_LOG_LEVEL: debug
       SQLPAD_WEB_LOG_LEVEL: warn
       SQLPAD_SEED_DATA_PATH: /etc/sqlpad/seed-data
@@ -68,6 +68,6 @@ networks:
   asp.dev.net:
     driver: bridge
 
-volumes:
-  minio_data:
-  postgres_data:
+#volumes:
+#  minio_data:
+#  postgres_data:
