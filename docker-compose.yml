@@ -1,0 +1,73 @@
+version: "3"
+
+services:
+  postgres:
+    restart: always
+    image: postgres:16
+    ports:
+      - "127.0.0.1:9031:5432"
+    networks:
+      - asp.dev.net
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+    volumes:
+      - E:/wsl/docker_mount/auto_screen_pro/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: auto_screen_data
+      POSTGRES_USER: asp
+      POSTGRES_PASSWORD: asp_local_password_pg
+      POSTGRES_HOST_AUTH_METHOD: trust
+  
+  minio:
+    restart: always
+    image: minio/minio:RELEASE.2024-01-29T03-56-32Z
+    ports:
+      - "127.0.0.1:9032:9000"
+      - "127.0.0.1:9033:9001"
+    command: server /data --console-address ":9001"
+    networks:
+      - asp.dev.net
+    volumes:
+      - E:/wsl/docker_mount/auto_screen_pro/minio_data:/data/
+    environment:
+      - MINIO_ROOT_USER=asp
+      - MINIO_ROOT_PASSWORD=asp_local_password_minio
+      - MINIO_DEFAULT_BUCKETS=default_bucket_name
+#      - MINIO_SERVER_URL=http://localhost:9032
+#      - MINIO_BROWSER_REDIRECT_URL=http://localhost:9032
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  sqlpad:
+    image: sqlpad/sqlpad:7.3
+    ports:
+      - '127.0.0.1:9034:3000'
+    networks:
+      - asp.dev.net
+    restart: always
+    environment:
+      SQLPAD_ADMIN: 'asp'
+      SQLPAD_ADMIN_PASSWORD: 'asp_local_password_sqlpad'
+      SQLPAD_APP_LOG_LEVEL: debug
+      SQLPAD_WEB_LOG_LEVEL: warn
+      SQLPAD_SEED_DATA_PATH: /etc/sqlpad/seed-data
+      SQLPAD_CONNECTIONS__postgres_asp__name: postgres_asp
+      SQLPAD_CONNECTIONS__postgres_asp__driver: postgres
+      SQLPAD_CONNECTIONS__postgres_asp__host: postgres
+      SQLPAD_CONNECTIONS__postgres_asp__port: 5432
+      SQLPAD_CONNECTIONS__postgres_asp__database: auto_screen_data
+      SQLPAD_CONNECTIONS__postgres_asp__username: asp
+      SQLPAD_CONNECTIONS__postgres_asp__password: asp_local_password_pg
+      SQLPAD_CONNECTIONS__postgres_asp__multiStatementTransactionEnabled: 'true'
+      SQLPAD_CONNECTIONS__postgres_asp__idleTimeoutSeconds: 1800
+
+networks:
+  asp.dev.net:
+    driver: bridge
+
+#volumes:
+#  minio_data:
+#  postgres_data:

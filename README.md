@@ -3,49 +3,29 @@ My private version of AutoScreen
 
 ## reference
 
-- <https://github.com/Desperationis/humdroid/blob/main/humdroid/wrappers/ScrcpyWrapper.py>
-- <https://github.com/leng-yue/py-scrcpy-client>
-- <https://huggingface.co/spaces/PaddlePaddle/UIE-X>
-- <https://huggingface.co/spaces/PaddlePaddle/ERNIE-Layout>
-- <https://docs.opencv.org/4.x/d4/dc6/tutorial_py_template_matching.html>
-- <https://github.com/Layout-Parser/layout-parser>
-- <https://github.com/PaddlePaddle/PaddleOCR>
-- <https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/layout/README.md>
-- <https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_en/quickstart_en.md>
+- <https://github.com/mnotgod96/AppAgent/blob/main/scripts/and_controller.py#L118>
 
+## jupyter notebook
 
+```bash
+jupyter lab
+```
 
 ## conda environments
 
 ```bash
-conda create --name py310asp python=3.10
-conda activate py310asp
+conda create --name py312asp python=3.12
+source activate py312asp
+
 conda deactivate
 conda remove -n py310asp --all
 ```
 
-
-## pip environments
+## pip packages
 
 ```bash
-pip install pip-review
-pip install jupyterlab seaborn
-pip install scrcpy-client
-# pip install scikit-image
-
-pip install pip-review jupyterlab seaborn scrcpy-client
-
-# 
-conda install -c conda-forge cudatoolkit=11.7 cudnn=8.4.1
-
-# https://www.paddlepaddle.org.cn/en/install/quick
-# pip install paddlepaddle-gpu paddleocr
-pip install paddlepaddle-gpu==2.4.2.post117 -f https://www.paddlepaddle.org.cn/whl/windows/mkl/avx/stable.html
-pip install paddleocr
-
-pip list
-pip list | grep scikit-image
-pip list | grep cv
+python -m pip install --upgrade pip
+pip install pip-review jupyterlab seaborn scikit-image opencv-python opencv-contrib-python pyshine
 
 pip install -r requirements.txt
 pip freeze > requirements.txt
@@ -77,5 +57,46 @@ adb shell setprop debug.layout true && adb shell service call activity 159929557
 adb shell setprop debug.layout false && adb shell service call activity 1599295570
 ```
 
+# docker data storage
 
+```bash
+docker compose -f "docker-compose.yml" -p "auto-screen-pro" up -d
+docker compose -f "docker-compose.yml" -p "auto-screen-pro" down
+````
+
+## Postgresql
+
+```postgresql
+DROP TABLE wechat_moment_stream;
+CREATE TABLE IF NOT EXISTS wechat_moment_stream (
+    moment_stream_id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL,
+    username VARCHAR (32) NOT NULL,
+    body_text TEXT,
+    share_link_title TEXT,
+    folded_text TEXT,
+    picture_list TEXT[],
+    liked_users TEXT[],
+    comments TEXT[],
+    extra_text_clickable TEXT[],
+    extra_text_non_clickable TEXT[]
+);
+
+
+INSERT INTO wechat_moment_stream(created_at, username, body_text, share_link_title, folded_text, picture_list, liked_users, comments, extra_text_clickable, extra_text_non_clickable)
+    VALUES ('2022-10-10 11:30:30',
+            '张三',
+            '正文',
+            '',
+            '',
+            '{"a.jpg", "b.jpg"}',
+            '{"李四"}',
+            '{}',
+            '{}',
+            '{"昨天"}'
+            )
+    RETURNING moment_stream_id;
+
+SELECT * FROM wechat_moment_stream ORDER BY moment_stream_id DESC LIMIT 100;
+```
 
